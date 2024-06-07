@@ -16,6 +16,10 @@ const defaultOnRedirectCallback = () => {
   window.history.replaceState({}, document.title, window.location.pathname);
 };
 
+type GetTokenOptions = {
+  isForceRefresh?: boolean;
+};
+
 type ErrorProps = {
   error: string;
   errorDescription: string;
@@ -166,20 +170,20 @@ export const KindeProvider = ({
     [client]
   );
 
-  const getToken = useCallback(async () => {
+  const getToken = useCallback(async (options: GetTokenOptions) => {
     let token;
     try {
-      token = await client!.getToken();
+      token = await client!.getToken(options);
     } catch (error) {
       throw console.error(error);
     }
     return token;
   }, [client]);
 
-  const getIdToken = useCallback(async () => {
+  const getIdToken = useCallback(async (options: GetTokenOptions) => {
     let idToken;
     try {
-      idToken = await client!.getIdToken();
+      idToken = await client!.getIdToken(options);
     } catch (error) {
       throw console.error(error);
     }
